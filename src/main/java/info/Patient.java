@@ -6,12 +6,11 @@ public class Patient {
     private final String last_name;
     private final String first_name;
     private final String patronymic;
-    private final char sex;
+    private final String sex;
     private final String date_of_birth;
     private final String address;
 
-    Patient(int id, String last_name, String first_name, String patronymic, char sex, String date_of_birth, String address) {
-        this.id = id;
+    public Patient( String last_name, String first_name, String patronymic, String sex, String date_of_birth, String address) {
         this.last_name = last_name;
         this.first_name = first_name;
         this.patronymic = patronymic;
@@ -32,7 +31,7 @@ public class Patient {
         return patronymic;
     }
 
-    public char getSex(){ return sex;}
+    public String getSex(){ return sex;}
 
     public String getDateOfBirth(){ return date_of_birth; }
 

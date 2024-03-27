@@ -11,7 +11,6 @@ public class GeneralDB {
 
         Class.forName("org.postgresql.Driver");
         Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hospital","postgres","2503");
-        conn.setAutoCommit(false);
         Statement ps = conn.createStatement();
         return ps;
 
