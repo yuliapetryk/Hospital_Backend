@@ -30,14 +30,15 @@ public class PatientDao implements Dao<Patient> {
     @Override
     public void add(Patient patient) throws SQLException {
         try {
-            String sql = "INSERT INTO  public.\"Patients\" ( last_name, first_name, patronymic,sex, date_of_birth, address ) values (?, ?, ?,?, to_date(?, 'YYYY-MM-DD'), ? )";
+            String sql = "INSERT INTO  public.\"Patients\" ( id, last_name, first_name, patronymic,sex, date_of_birth, address ) values (?, ?, ?, ?,?, to_date(?, 'YYYY-MM-DD'), ? )";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, patient.getLastName());
-            ps.setString(2, patient.getFirstName());
-            ps.setString(3, patient.getPatronymic());
-            ps.setString(4, patient.getSex());
-            ps.setString(5, patient.getDateOfBirth());
-            ps.setString(6, patient.getAddress());
+            ps.setInt(1, patient.getId());
+            ps.setString(2, patient.getLastName());
+            ps.setString(3, patient.getFirstName());
+            ps.setString(4, patient.getPatronymic());
+            ps.setString(5, patient.getSex());
+            ps.setString(6, patient.getDateOfBirth());
+            ps.setString(7, patient.getAddress());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.severe("Error: can`t add new patient");

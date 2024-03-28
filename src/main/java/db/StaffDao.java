@@ -1,6 +1,6 @@
 package db;
 
-import info.Nurse;
+import info.Staff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,36 +9,38 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class NurseDao implements Dao<Nurse>{
+public class StaffDao implements Dao<Staff>{
 
     private final Connection connection;
 
-    public NurseDao(Connection connection) {
+    public StaffDao(Connection connection) {
         this.connection = connection;
     }
 
     private static final Logger logger = Logger.getLogger(PatientDao.class.getName());
 
     @Override
-    public Optional<Nurse> get(long id) {
+    public Optional<Staff> get(long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Nurse> getAll() {
+    public List<Staff> getAll() {
         return null;
     }
 
+
+
     @Override
-    public void add(Nurse nurse) throws SQLException {
+    public void add(Staff employee) throws SQLException {
         try {
-            String sql = "INSERT INTO  public.\"Nurses\" ( last_name, first_name, patronymic, position, phone,specialty)) values (?, ?, ?,?, ?, ? )";
+            String sql = "INSERT INTO  public.\"Staff\" ( last_name, first_name, patronymic, position, phone,specialty)) values (?, ?, ?,?, ?, ? )";
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, nurse.getLastName());
-            ps.setString(2, nurse.getFirstName());
-            ps.setString(3, nurse.getPatronymic());
-            ps.setString(4, nurse.getPosition());
-            ps.setString(5, nurse.getPhone());
+            ps.setString(1, employee.getLastName());
+            ps.setString(2, employee.getFirstName());
+            ps.setString(3, employee.getPatronymic());
+            ps.setString(4, employee.getPosition());
+            ps.setString(5, employee.getPhone());
             ps.executeUpdate();
         } catch (
                 SQLException e) {
@@ -47,12 +49,12 @@ public class NurseDao implements Dao<Nurse>{
     }
 
     @Override
-    public void update(Nurse nurse, String[] params) {
+    public void update(Staff employee, String[] params) {
 
     }
 
     @Override
-    public void delete(Nurse nurse) {
+    public void delete(Staff employee) {
 
     }
 }

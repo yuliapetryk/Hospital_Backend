@@ -11,7 +11,7 @@ public class Main {
 
         GeneralDB db = new GeneralDB();
         Statement statement = db.setConnection();
-        Patient patient = new Patient("Petrenko","Petro", "Petrovych","M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
+        Patient patient = new Patient(1324, "Petrenko","Petro", "Petrovych","M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
         PatientDao patientDao = new PatientDao(statement.getConnection());
         patientDao.add(patient);
     }

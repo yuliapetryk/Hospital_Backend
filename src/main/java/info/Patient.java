@@ -10,13 +10,18 @@ public class Patient {
     private final String date_of_birth;
     private final String address;
 
-    public Patient( String last_name, String first_name, String patronymic, String sex, String date_of_birth, String address) {
+    public Patient( int id, String last_name, String first_name, String patronymic, String sex, String date_of_birth, String address) {
+        this.id = id;
         this.last_name = last_name;
         this.first_name = first_name;
         this.patronymic = patronymic;
         this.sex = sex;
         this.date_of_birth = date_of_birth;
         this.address = address;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getLastName(){
