@@ -1,5 +1,6 @@
 package db;
 
+import db.parser.Parser;
 import info.Staff;
 
 import java.sql.Connection;
@@ -21,8 +22,18 @@ public class StaffDao implements Dao<Staff>{
     private static final Logger logger = Logger.getLogger(PatientDao.class.getName());
 
     @Override
-    public Optional<Staff> get(long id) {
-        return Optional.empty();
+    public Staff get(int id) {
+        try {
+            String sql = "SELECT * FROM public.\"Staff\" WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+            result.next();
+            Parser parser = new Parser();
+            return parser.createStaffDB(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override

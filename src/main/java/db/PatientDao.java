@@ -1,5 +1,6 @@
 package db;
 
+import db.parser.Parser;
 import info.Patient;
 
 import java.sql.*;
@@ -18,8 +19,18 @@ public class PatientDao implements Dao<Patient> {
     private static final Logger logger = Logger.getLogger(PatientDao.class.getName());
 
     @Override
-    public Optional<Patient> get(long id) {
-        return Optional.empty();
+    public Patient get(int id) {
+        try {
+            String sql = "SELECT * FROM public.\"Patients\" WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+            result.next();
+            Parser parser = new Parser();
+            return parser.createPatientDB(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
@@ -55,4 +66,6 @@ public class PatientDao implements Dao<Patient> {
     public void delete(Patient patient) {
 
     }
+
+
 }

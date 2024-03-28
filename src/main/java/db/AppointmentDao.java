@@ -1,5 +1,6 @@
 package db;
 
+import db.parser.Parser;
 import info.Appointment;
 
 import java.sql.Connection;
@@ -21,10 +22,7 @@ public class AppointmentDao implements Dao<Appointment>{
 
     private static final Logger logger = Logger.getLogger(PatientDao.class.getName());
 
-    @Override
-    public Optional<Appointment> get(long id) {
-        return Optional.empty();
-    }
+
 
     public int getDoctorId(int appointmentId) {
         try {
@@ -86,6 +84,21 @@ public class AppointmentDao implements Dao<Appointment>{
             } else if (Objects.equals(position, "doctor")){
                 updateStatus(appointmentId);
             }
+        }
+    }
+
+    @Override
+    public Appointment get(int id){
+        try {
+            String sql = "SELECT * FROM public.\"Appointments\" WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+            result.next();
+            Parser parser = new Parser();
+            return parser.createAppointmentDB(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 

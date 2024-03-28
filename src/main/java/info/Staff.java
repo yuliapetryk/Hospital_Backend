@@ -1,5 +1,7 @@
 package info;
 
+import java.util.Objects;
+
 public class Staff {
 
     private int id;
@@ -16,6 +18,19 @@ public class Staff {
         this.patronymic = patronymic;
         this.position =  position;
         this.phone = phone;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Staff staff = (Staff) obj;
+        return id == staff.id &&
+                Objects.equals(last_name, staff.last_name) &&
+                Objects.equals(first_name, staff.first_name) &&
+                Objects.equals(patronymic, staff.patronymic) &&
+                Objects.equals(position, staff.position) &&
+                Objects.equals(phone, staff.phone) ;
     }
 
     public int getId() {
@@ -36,6 +51,7 @@ public class Staff {
         return position;
     }
     public String getPhone(){ return phone; }
+
 
 
 }
