@@ -10,7 +10,7 @@ public class Appointment {
     private  String medication;
     private  String procedure;
     private  String surgery;
-    private  boolean status = false;
+    private final boolean status = false;
 
    public Appointment( String date, int doctorId, int patientId, String diagnosis,String medication, String procedure, String surgery){
     this.date = date;
@@ -52,6 +52,10 @@ public class Appointment {
 
     public String getSurgery() {
         return surgery;
+    }
+
+    public boolean getStatus(){
+       return status;
     }
 
 }
