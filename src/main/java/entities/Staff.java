@@ -1,4 +1,4 @@
-package info;
+package entities;
 
 import java.util.Objects;
 
@@ -29,9 +29,22 @@ public class Staff {
                 Objects.equals(last_name, staff.last_name) &&
                 Objects.equals(first_name, staff.first_name) &&
                 Objects.equals(patronymic, staff.patronymic) &&
-                Objects.equals(position, staff.position) &&
-                Objects.equals(phone, staff.phone) ;
+                Objects.equals(phone, staff.phone) &&
+                Objects.equals(position, staff.position);
     }
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "id=" + id +
+                ", last_name='" + last_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", position='" + position + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
 
     public int getId() {
         return id;

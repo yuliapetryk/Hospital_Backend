@@ -1,4 +1,4 @@
-package info;
+package entities;
 
 import java.util.Objects;
 
@@ -35,6 +35,20 @@ public class Patient {
                 Objects.equals(date_of_birth, patient.date_of_birth) &&
                 Objects.equals(address, patient.address);
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "id=" + id +
+                ", last_name='" + last_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", sex='" + sex + '\'' +
+                ", date_of_birth='" + date_of_birth + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
 
     public int getId() {
         return id;

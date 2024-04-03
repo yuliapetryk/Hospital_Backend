@@ -1,8 +1,9 @@
 package db.parser;
 
-import info.Appointment;
-import info.Patient;
-import info.Staff;
+
+import entities.Appointment;
+import entities.Patient;
+import entities.Staff;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

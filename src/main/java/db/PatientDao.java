@@ -1,11 +1,11 @@
 package db;
 
 import db.parser.Parser;
-import info.Patient;
+import entities.Patient;
+
 
 import java.sql.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 public class PatientDao implements Dao<Patient> {
@@ -58,9 +58,27 @@ public class PatientDao implements Dao<Patient> {
     }
 
     @Override
-    public void update(Patient patient, String[] params) {
-
+    public void update(int id, Patient patient){
+        try {
+            String sql = "UPDATE public.\"Patients\" SET last_name=?, first_name=?, patronymic=?, sex=?, date_of_birth=to_date(?, 'YYYY-MM-DD'), address=? WHERE id=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, patient.getLastName());
+            ps.setString(2, patient.getFirstName());
+            ps.setString(3, patient.getPatronymic());
+            ps.setString(4, patient.getSex());
+            ps.setString(5, patient.getDateOfBirth());
+            ps.setString(6, patient.getAddress());
+            ps.setInt(7, patient.getId());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                logger.warning("No rows affected while updating patient with ID: " + patient.getId());
+            }
+        } catch (SQLException e) {
+            logger.severe("Error: can't update patient with ID: " + patient.getId());
+            throw new RuntimeException(e.getMessage());
+        }
     }
+
 
     @Override
     public void delete(Patient patient) {

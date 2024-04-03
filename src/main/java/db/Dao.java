@@ -12,7 +12,7 @@ public interface Dao<T> {
 
     void add(T t) throws SQLException;
 
-    void update(T t, String[] params);
+    void update( int id, T t);
 
     void delete(T t);
 }

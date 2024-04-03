@@ -1,7 +1,7 @@
 package db;
 
 import db.parser.Parser;
-import info.Staff;
+import entities.Staff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -74,9 +74,26 @@ public class StaffDao implements Dao<Staff>{
     }
 
     @Override
-    public void update(Staff employee, String[] params) {
-
+    public void update(int id, Staff employee) {
+        try {
+            String sql = "UPDATE public.\"Staff\" SET last_name=?, first_name=?, patronymic=?, position=?, phone=? WHERE id=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, employee.getLastName());
+            ps.setString(2, employee.getFirstName());
+            ps.setString(3, employee.getPatronymic());
+            ps.setString(4, employee.getPosition());
+            ps.setString(5, employee.getPhone());
+            ps.setInt(6, employee.getId());
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                logger.warning("No rows affected while updating employee with ID: " + employee.getId());
+            }
+        } catch (SQLException e) {
+            logger.severe("Error: can't update employee with ID: " + employee.getId());
+            throw new RuntimeException(e.getMessage());
+        }
     }
+
 
     @Override
     public void delete(Staff employee) {

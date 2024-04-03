@@ -1,7 +1,7 @@
 package db;
 
 import db.parser.Parser;
-import info.Appointment;
+import entities.Appointment;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 public class AppointmentDao implements Dao<Appointment>{
@@ -128,9 +127,29 @@ public class AppointmentDao implements Dao<Appointment>{
     }
 
     @Override
-    public void update(Appointment appointment, String[] params) {
-
+    public void update(int id, Appointment appointment) {
+        try {
+            String sql = "UPDATE public.\"Appointments\" SET date=to_date(?, 'YYYY-MM-DD'), doctor_id=?, patient_id=?, diagnosis=?, medication=?, procedure=?, surgery=?, status=? WHERE id=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, appointment.getDate());
+            ps.setInt(2, appointment.getDoctorId());
+            ps.setInt(3, appointment.getPatientId());
+            ps.setString(4, appointment.getDiagnosis());
+            ps.setString(5, appointment.getMedication());
+            ps.setString(6, appointment.getProcedure());
+            ps.setString(7, appointment.getSurgery());
+            ps.setBoolean(8, appointment.getStatus());
+            ps.setInt(9, id);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                logger.warning("No rows affected while updating appointment with ID: " + id);
+            }
+        } catch (SQLException e) {
+            logger.severe("Error: can't update appointment with ID: " + id);
+            throw new RuntimeException(e.getMessage());
+        }
     }
+
 
     @Override
     public void delete(Appointment appointment) {

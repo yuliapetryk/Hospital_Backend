@@ -1,4 +1,4 @@
-package info;
+package entities;
 
 import java.util.Objects;
 
@@ -48,6 +48,26 @@ public class Appointment {
                 Objects.equals(medication, appointment.medication) &&
                 Objects.equals(procedure, appointment.procedure) &&
                 Objects.equals(surgery, appointment.surgery);
+    }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", doctorId=" + doctorId +
+                ", patientId=" + patientId +
+                ", diagnosis='" + diagnosis + '\'' +
+                ", medication='" + medication + '\'' +
+                ", procedure='" + procedure + '\'' +
+                ", surgery='" + surgery + '\'' +
+                ", status=" + status +
+                '}';
+    }
+
+
+    public int getId() {
+        return id;
     }
 
     public boolean isStatus() {

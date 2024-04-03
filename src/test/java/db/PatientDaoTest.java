@@ -1,6 +1,7 @@
 package db;
 
-import info.Patient;
+
+import entities.Patient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -33,4 +34,21 @@ class PatientDaoTest {
         assertEquals(patient,patientDao.get(1325));
         assertNotEquals(patient,patientDao.get(5));
     }
+
+    @Test
+    void update() throws SQLException, ClassNotFoundException {
+        Patient patient = new Patient(1325, "Petrenko", "Petro", "Petrovych", "M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
+        Patient patientUpdated = new Patient(1325, "PetrenkoNew", "PetroNew", "Petrovych", "M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
+        PatientDao patientDao = new PatientDao(statement.getConnection());
+
+        patientDao.update(1325, patientUpdated);
+        assertEquals(patientUpdated, patientDao.get(1325));
+        assertNotEquals(patient, patientDao.get(1325));
+
+        Patient patientOriginal = new Patient(1325, "Petrenko", "Petro", "Petrovych", "M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
+        patientDao.update(1325, patientOriginal);
+        assertEquals(patientOriginal, patientDao.get(1325));
+        assertNotEquals(patientUpdated, patientDao.get(1325));
+    }
+
 }
