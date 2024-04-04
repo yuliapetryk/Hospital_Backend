@@ -45,7 +45,6 @@ public class Staff {
                 '}';
     }
 
-
     public int getId() {
         return id;
     }

@@ -93,7 +93,11 @@ public class AppointmentDao implements Dao<Appointment>{
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet result = ps.executeQuery();
-            result.next();
+
+            if (!result.next()) {
+                return null;
+            }
+
             Parser parser = new Parser();
             return parser.createAppointmentDB(result);
         } catch (SQLException e) {
@@ -152,7 +156,15 @@ public class AppointmentDao implements Dao<Appointment>{
 
 
     @Override
-    public void delete(Appointment appointment) {
-        throw new UnsupportedOperationException("Can`t delete appointment.");
+    public void delete(int id) {
+        try{
+            String sql = "DELETE FROM public.\"Appointments\" WHERE id=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Error: can't delete appointment with ID: " + id);
+            throw new RuntimeException(e.getMessage());
+        };
     }
 }

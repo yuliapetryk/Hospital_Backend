@@ -25,13 +25,35 @@ public class PatientDao implements Dao<Patient> {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, id);
             ResultSet result = ps.executeQuery();
-            result.next();
+
+            if (!result.next()) {
+                return null;
+            }
+
             Parser parser = new Parser();
             return parser.createPatientDB(result);
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public String getNameById(int id) {
+        try {
+            String sql = "SELECT CONCAT(last_name, ' ', first_name, ' ', patronymic) AS full_name FROM public.\"Patients\" WHERE id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+
+            if (!result.next()) {
+                return null;
+            }
+
+            return  result.getString("full_name");
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
 
     @Override
     public List<Patient> getAll() {
@@ -81,8 +103,16 @@ public class PatientDao implements Dao<Patient> {
 
 
     @Override
-    public void delete(Patient patient) {
-
+    public void delete(int id) {
+        try{
+            String sql = "DELETE FROM public.\"Patients\" WHERE id=?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.severe("Error: can't delete patient with ID: " + id);
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 
