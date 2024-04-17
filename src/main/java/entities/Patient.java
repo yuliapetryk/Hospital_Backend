@@ -10,16 +10,18 @@ public class Patient {
     private final String patronymic;
     private final String sex;
     private final String date_of_birth;
-    private final String address;
+    private final String phone;
+    private final String password;
 
-    public Patient( int id, String last_name, String first_name, String patronymic, String sex, String date_of_birth, String address) {
+    public Patient( int id, String last_name, String first_name, String patronymic, String sex, String date_of_birth, String phone, String password) {
         this.id = id;
         this.last_name = last_name;
         this.first_name = first_name;
         this.patronymic = patronymic;
         this.sex = sex;
         this.date_of_birth = date_of_birth;
-        this.address = address;
+        this.phone = phone;
+        this.password = password;
     }
 
     @Override
@@ -33,7 +35,8 @@ public class Patient {
                 Objects.equals(patronymic, patient.patronymic) &&
                 Objects.equals(sex, patient.sex) &&
                 Objects.equals(date_of_birth, patient.date_of_birth) &&
-                Objects.equals(address, patient.address);
+                Objects.equals(phone, patient.phone) &&
+                Objects.equals(password, patient.password);
     }
 
     @Override
@@ -45,7 +48,8 @@ public class Patient {
                 ", patronymic='" + patronymic + '\'' +
                 ", sex='" + sex + '\'' +
                 ", date_of_birth='" + date_of_birth + '\'' +
-                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 
@@ -70,8 +74,11 @@ public class Patient {
 
     public String getDateOfBirth(){ return date_of_birth; }
 
-    public String getAddress(){
-        return address;
+    public String getPhone(){
+        return phone;
+    }
+    public String getPassword(){
+        return password;
     }
 
 }

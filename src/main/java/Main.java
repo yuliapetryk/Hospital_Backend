@@ -14,11 +14,11 @@ public class Main {
 
         GeneralDB db = new GeneralDB();
         Statement statement = db.setConnection();
-        Patient patient = new Patient(1324, "Petrenko","Petro", "Petrovych","M", "1992-11-11", "Kyiv, Khreshchatyk, 123");
+        Patient patient = new Patient(1324, "Petrenko","Petro", "Petrovych","M", "1992-11-11", "+3809546221", "mypassword033");
         PatientDao patientDao = new PatientDao(statement.getConnection());
         //patientDao.delete(12);
         //patientDao.add(patient);
-        Staff staff = new Staff(3283, "Ivanova2","Ivanna", "Ivanivna", "nurse", "+380972653421");
+        Staff staff = new Staff(3283, "Ivanova2","Ivanna", "Ivanivna", "nurse", "+380972653421", "ghgh6dddgg");
         StaffDao staffDao = new StaffDao(statement.getConnection());
        // staffDao.update(3283, staff);
         //System.out.println(patientDao.getNameById(1324));

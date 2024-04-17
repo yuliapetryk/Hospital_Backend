@@ -62,7 +62,7 @@ public class StaffDao implements Dao<Staff>{
     @Override
     public void add(Staff employee) throws SQLException {
         try {
-            String sql = "INSERT INTO  public.\"Staff\" ( id, last_name, first_name, patronymic, position, phone) values (?, ?, ?, ?,?, ? )";
+            String sql = "INSERT INTO  public.\"Staff\" ( id, last_name, first_name, patronymic, position, phone, password) values (?, ?, ?, ?,?, ?,? )";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, employee.getId());
             ps.setString(2, employee.getLastName());
@@ -70,6 +70,7 @@ public class StaffDao implements Dao<Staff>{
             ps.setString(4, employee.getPatronymic());
             ps.setString(5, employee.getPosition());
             ps.setString(6, employee.getPhone());
+            ps.setString(7, employee.getPassword());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.severe("Error: can`t add new employee");
@@ -80,14 +81,15 @@ public class StaffDao implements Dao<Staff>{
     @Override
     public void update(int id, Staff employee) {
         try {
-            String sql = "UPDATE public.\"Staff\" SET last_name=?, first_name=?, patronymic=?, position=?, phone=? WHERE id=?";
+            String sql = "UPDATE public.\"Staff\" SET last_name=?, first_name=?, patronymic=?, position=?, phone=?, password=?  WHERE id=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, employee.getLastName());
             ps.setString(2, employee.getFirstName());
             ps.setString(3, employee.getPatronymic());
             ps.setString(4, employee.getPosition());
             ps.setString(5, employee.getPhone());
-            ps.setInt(6, employee.getId());
+            ps.setString(6, employee.getPassword());
+            ps.setInt(7, employee.getId());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected == 0) {
                 logger.warning("No rows affected while updating employee with ID: " + employee.getId());

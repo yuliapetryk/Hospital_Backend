@@ -18,7 +18,8 @@ public class Parser {
                 patientDB.getString(4),
                 patientDB.getString(5),
                 patientDB.getString(6),
-                patientDB.getString(7));
+                patientDB.getString(7),
+                patientDB.getString(8));
         return patient;
     }
 
@@ -42,7 +43,8 @@ public class Parser {
                 staffDB.getString(3),
                 staffDB.getString(4),
                 staffDB.getString(6),
-                staffDB.getString(5));
+                staffDB.getString(5),
+                staffDB.getString(7));
         return staff;
     }
 }

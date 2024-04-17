@@ -63,7 +63,7 @@ public class PatientDao implements Dao<Patient> {
     @Override
     public void add(Patient patient) throws SQLException {
         try {
-            String sql = "INSERT INTO  public.\"Patients\" ( id, last_name, first_name, patronymic,sex, date_of_birth, address ) values (?, ?, ?, ?,?, to_date(?, 'YYYY-MM-DD'), ? )";
+            String sql = "INSERT INTO  public.\"Patients\" ( id, last_name, first_name, patronymic,sex, date_of_birth, phone, password ) values (?, ?, ?, ?,?, to_date(?, 'YYYY-MM-DD'), ?, ? )";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, patient.getId());
             ps.setString(2, patient.getLastName());
@@ -71,7 +71,8 @@ public class PatientDao implements Dao<Patient> {
             ps.setString(4, patient.getPatronymic());
             ps.setString(5, patient.getSex());
             ps.setString(6, patient.getDateOfBirth());
-            ps.setString(7, patient.getAddress());
+            ps.setString(7, patient.getPhone());
+            ps.setString(8, patient.getPassword());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.severe("Error: can`t add new patient");
@@ -82,15 +83,16 @@ public class PatientDao implements Dao<Patient> {
     @Override
     public void update(int id, Patient patient){
         try {
-            String sql = "UPDATE public.\"Patients\" SET last_name=?, first_name=?, patronymic=?, sex=?, date_of_birth=to_date(?, 'YYYY-MM-DD'), address=? WHERE id=?";
+            String sql = "UPDATE public.\"Patients\" SET last_name=?, first_name=?, patronymic=?, sex=?, date_of_birth=to_date(?, 'YYYY-MM-DD'), phone=?, password=? WHERE id=?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, patient.getLastName());
             ps.setString(2, patient.getFirstName());
             ps.setString(3, patient.getPatronymic());
             ps.setString(4, patient.getSex());
             ps.setString(5, patient.getDateOfBirth());
-            ps.setString(6, patient.getAddress());
-            ps.setInt(7, patient.getId());
+            ps.setString(6, patient.getPhone());
+            ps.setString(7, patient.getPassword());
+            ps.setInt(8, patient.getId());
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected == 0) {
                 logger.warning("No rows affected while updating patient with ID: " + patient.getId());

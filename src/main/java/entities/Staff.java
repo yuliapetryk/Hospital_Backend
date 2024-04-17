@@ -10,14 +10,16 @@ public class Staff {
     private final String patronymic;
     private final String phone;
     private final String  position;
+    private final String  password;
 
-   public Staff( int id, String last_name, String first_name, String patronymic, String  position, String phone) {
+   public Staff( int id, String last_name, String first_name, String patronymic, String  position, String phone, String password) {
         this.id = id;
         this.last_name = last_name;
         this.first_name = first_name;
         this.patronymic = patronymic;
         this.position =  position;
         this.phone = phone;
+        this.password = password;
     }
 
     @Override
@@ -30,7 +32,8 @@ public class Staff {
                 Objects.equals(first_name, staff.first_name) &&
                 Objects.equals(patronymic, staff.patronymic) &&
                 Objects.equals(phone, staff.phone) &&
-                Objects.equals(position, staff.position);
+                Objects.equals(position, staff.position) &&
+                Objects.equals(password, staff.password);
     }
 
     @Override
@@ -42,6 +45,7 @@ public class Staff {
                 ", patronymic='" + patronymic + '\'' +
                 ", position='" + position + '\'' +
                 ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 
@@ -63,6 +67,7 @@ public class Staff {
         return position;
     }
     public String getPhone(){ return phone; }
+    public String getPassword(){ return password; }
 
 
 
