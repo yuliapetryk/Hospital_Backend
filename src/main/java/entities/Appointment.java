@@ -1,5 +1,8 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Appointment {
@@ -12,7 +15,7 @@ public class Appointment {
     private  String medication;
     private  String procedure;
     private  String surgery;
-    private final boolean status = false;
+    private  boolean status;
 
    public Appointment( String date, int doctorId, int patientId, String diagnosis,String medication, String procedure, String surgery){
     this.date = date;
@@ -33,6 +36,20 @@ public class Appointment {
         this.procedure = procedure;
         this.medication = medication;
         this.surgery = surgery;
+    }
+    @JsonCreator
+    public Appointment() {
+    }
+    public Appointment( int id, String date, int doctorId, int patientId, String diagnosis,String medication, String procedure, String surgery, boolean status){
+        this.id  = id;
+        this.date = date;
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+        this.diagnosis = diagnosis;
+        this.procedure = procedure;
+        this.medication = medication;
+        this.surgery = surgery;
+        this.status = status;
     }
 
     @Override

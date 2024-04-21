@@ -8,11 +8,30 @@
         <servlet-name>HospitalServlet</servlet-name>
         <servlet-class>servlet.HospitalServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PatientServlet</servlet-name>
+        <servlet-class>servlet.PatientServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AppointmentsServlet</servlet-name>
+        <servlet-class>servlet.AppointmentsServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>HospitalServlet</servlet-name>
-        <url-pattern>/hospital</url-pattern>
+        <url-pattern>/appointments/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AppointmentsServlet</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>PatientServlet</servlet-name>
+        <url-pattern>/my_appointments</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>

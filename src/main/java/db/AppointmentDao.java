@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -100,6 +101,48 @@ public class AppointmentDao implements Dao<Appointment>{
 
             Parser parser = new Parser();
             return parser.createAppointmentDB(result);
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public List<Appointment> getAllByPatient(int id) {
+        List<Appointment> appointments = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM public.\"Appointments\" WHERE patient_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+
+            Parser parser = new Parser();
+            while (result.next()) {
+                Appointment appointment = parser.createAppointmentDB(result);
+                appointments.add(appointment);
+            }
+
+            return appointments;
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public List<Appointment> getAllByDoctor(int id) {
+        List<Appointment> appointments = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM public.\"Appointments\" WHERE doctor_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet result = ps.executeQuery();
+
+            Parser parser = new Parser();
+            while (result.next()) {
+                Appointment appointment = parser.createAppointmentDB(result);
+                appointments.add(appointment);
+            }
+
+            return appointments;
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }

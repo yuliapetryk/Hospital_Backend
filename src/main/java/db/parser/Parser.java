@@ -32,7 +32,8 @@ public class Parser {
                 appointmentDB.getString(5),
                 appointmentDB.getString(6),
                 appointmentDB.getString(7),
-                appointmentDB.getString(8));
+                appointmentDB.getString(8),
+                appointmentDB.getBoolean(9));
         return appointment;
     }
 
