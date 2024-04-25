@@ -25,15 +25,19 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HospitalServlet</servlet-name>
+        <url-pattern>/status/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>AppointmentsServlet</servlet-name>
-        <url-pattern>/create</url-pattern>
+        <url-pattern>/appointments_doctor/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>PatientServlet</servlet-name>
-        <url-pattern>/my_appointments</url-pattern>
+        <url-pattern>/appointments_patient/*</url-pattern>
     </servlet-mapping>
 
     <filter>
