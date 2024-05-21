@@ -2,83 +2,69 @@ package servlet;
 
 
 import com.google.gson.Gson;
-import db.AppointmentDao;
-import db.GeneralDB;
 import entities.Appointment;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import services.HospitalService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public class HospitalServlet extends HttpServlet {
+    private HospitalService hospitalService;
 
-    private GeneralDB db = new GeneralDB();
-    private Statement statement;
-    private AppointmentDao appointmentDao;
     @Override
     public void init() throws ServletException {
-        super.init();
         try {
-            statement = db.setConnection();
-            appointmentDao = new AppointmentDao(statement.getConnection());
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            hospitalService = new HospitalService();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ServletException("Failed to initialize HospitalService", e);
         }
     }
 
-    private void updateStatus(int appointmentId) throws SQLException, ClassNotFoundException {
-        appointmentDao.updateStatus(appointmentId);
-    }
-
-    private List<Appointment> getAllAppointments() throws SQLException, ClassNotFoundException {
-        return appointmentDao.getAllByPatient(1324);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         PrintWriter out = response.getWriter();
-
         Gson gson = new Gson();
-        String json = null;
+        String json;
+
         try {
-            json = gson.toJson(getAllAppointments());
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            List<Appointment> appointments = hospitalService.getAllAppointments();
+            json = gson.toJson(appointments);
+        } catch (SQLException e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving appointments");
+            return;
         }
+
         out.print(json);
         out.flush();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         String pathInfo = request.getPathInfo();
-        String[] pathParts = pathInfo.split("/");
-        String idParameter = pathParts[pathParts.length - 1];
+        String[] pathParts = pathInfo != null ? pathInfo.split("/") : new String[0];
+        String idParameter = pathParts.length > 0 ? pathParts[pathParts.length - 1] : null;
 
         if (idParameter != null && !idParameter.isEmpty()) {
-
             int appointmentId = Integer.parseInt(idParameter);
 
             try {
-                updateStatus(appointmentId);
-
+                hospitalService.updateStatus(appointmentId);
                 response.setStatus(HttpServletResponse.SC_OK);
                 PrintWriter out = response.getWriter();
                 out.print("Appointment status updated successfully");
                 out.flush();
-
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new ServletException("Error updating appointment status", e);
+            } catch (SQLException e) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error updating appointment status");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -87,7 +73,4 @@ public class HospitalServlet extends HttpServlet {
             out.flush();
         }
     }
-
-
 }
-

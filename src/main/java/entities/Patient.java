@@ -1,6 +1,8 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
+
 
 public class Patient {
 
@@ -13,7 +15,14 @@ public class Patient {
     private final String phone;
     private final String password;
 
-    public Patient( int id, String last_name, String first_name, String patronymic, String sex, String date_of_birth, String phone, String password) {
+    public Patient(@JsonProperty("id") int id,
+                   @JsonProperty("last_name") String last_name,
+                   @JsonProperty("first_name") String first_name,
+                   @JsonProperty("patronymic") String patronymic,
+                   @JsonProperty("sex") String sex,
+                   @JsonProperty("date_of_birth") String date_of_birth,
+                   @JsonProperty("phone") String phone,
+                   @JsonProperty("password") String password) {
         this.id = id;
         this.last_name = last_name;
         this.first_name = first_name;
@@ -52,7 +61,6 @@ public class Patient {
                 ", password='" + password + '\'' +
                 '}';
     }
-
 
     public int getId() {
         return id;

@@ -23,16 +23,6 @@ public class LoginServlet extends HttpServlet {
         public String password;
     }
 
-    private static class LoginResponse {
-        public int token;
-        public String role;
-
-        public LoginResponse(int token, String role) {
-            this.token = token;
-            this.role = role;
-        }
-
-    }
     final String MODE_DOCTOR = "0";
     final String MODE_PATIENT = "1";
     @Override

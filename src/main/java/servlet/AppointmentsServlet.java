@@ -2,66 +2,61 @@ package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import db.AppointmentDao;
-import db.GeneralDB;
 import entities.Appointment;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import services.AppointmentService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
-
 public class AppointmentsServlet extends HttpServlet {
+    private AppointmentService appointmentService;
 
-    private GeneralDB db = new GeneralDB();
-    private Statement statement;
-    private AppointmentDao appointmentDao;
     @Override
     public void init() throws ServletException {
-        super.init();
         try {
-            statement = db.setConnection();
-            appointmentDao = new AppointmentDao(statement.getConnection());
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            appointmentService = new AppointmentService();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new ServletException("Failed to initialize AppointmentService", e);
         }
     }
 
-    private List<Appointment> getAllAppointments(int id) throws SQLException, ClassNotFoundException {
-        return appointmentDao.getAllByDoctor(id);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+
         String pathInfo = request.getPathInfo();
-        String[] pathParts = pathInfo.split("/");
-        String idParameter = pathParts[pathParts.length - 1];
+        String[] pathParts = pathInfo != null ? pathInfo.split("/") : new String[0];
+        String idParameter = pathParts.length > 0 ? pathParts[pathParts.length - 1] : null;
 
         if (idParameter != null && !idParameter.isEmpty()) {
-
-            int id = Integer.parseInt(idParameter);
+            int doctorId = Integer.parseInt(idParameter);
             PrintWriter out = response.getWriter();
-
             Gson gson = new Gson();
-            String json = null;
+            String json;
+
             try {
-                json = gson.toJson(getAllAppointments(id));
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                List<Appointment> appointments = appointmentService.getAllAppointmentsByDoctor(doctorId);
+                json = gson.toJson(appointments);
+            } catch (SQLException e) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error retrieving appointments");
+                return;
             }
+
             out.print(json);
             out.flush();
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Missing or invalid 'id' parameter");
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
@@ -69,14 +64,10 @@ public class AppointmentsServlet extends HttpServlet {
         Appointment appointment = objectMapper.readValue(request.getReader(), Appointment.class);
 
         try {
-            appointmentDao.add(appointment);
-
+            appointmentService.addAppointment(appointment);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Error: Can't add new appointment");
-            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error adding new appointment");
         }
     }
 }
-
